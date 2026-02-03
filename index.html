@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Good Kids VIP</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0b0f1a;
+      --bg2:#0f172a;
+      --card: rgba(255,255,255,.06);
+      --card2: rgba(255,255,255,.10);
+      --line: rgba(255,255,255,.10);
+      --text:#f8fafc;
+      --muted:rgba(248,250,252,.72);
+
+      --gold:#f6d365;
+      --gold2:#fda085;
+      --pink:#ff2e88;
+      --pink2:#ff6aa8;
+
+      --shadow: 0 18px 55px rgba(0,0,0,.45);
+      --radius:20px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:'Cairo',system-ui,-apple-system,Segoe UI,Roboto,Arial;
+      background:
+        radial-gradient(900px 520px at 90% -10%, rgba(255,46,136,.35), transparent 60%),
+        radial-gradient(700px 520px at 10% 0%, rgba(246,211,101,.22), transparent 60%),
+        linear-gradient(180deg, var(--bg), var(--bg2));
+      color:var(--text);
+      min-height:100vh;
+    }
+    a{color:inherit;text-decoration:none}
+    .container{max-width:1200px;margin:0 auto;padding:0 14px}
+
+    header{
+      position:sticky;top:0;z-index:10;
+      backdrop-filter: blur(14px);
+      background: linear-gradient(90deg, rgba(255,46,136,.20), rgba(246,211,101,.10));
+      border-bottom:1px solid var(--line);
+    }
+    .topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 0;gap:12px}
+    .brand{display:flex;align-items:center;gap:10px}
+    .brand img{
+      width:50px;height:50px;border-radius:16px;object-fit:cover;
+      background:rgba(255,255,255,.12);
+      border:1px solid rgba(255,255,255,.18);
+      box-shadow:0 10px 25px rgba(0,0,0,.25);
+    }
+    .title{font-weight:1000;font-size:18px;line-height:1}
+    .sub{font-size:12px;color:rgba(255,255,255,.85);margin-top:3px}
+
+    .actions{display:flex;align-items:center;gap:10px}
+    .icon-btn{
+      border:none;outline:none;cursor:pointer;
+      display:flex;align-items:center;justify-content:center;
+      width:46px;height:46px;border-radius:16px;
+      background:rgba(255,255,255,.10);
+      color:#fff;font-size:20px;
+      transition:.2s transform,.2s background;
+      border:1px solid rgba(255,255,255,.14);
+    }
+    .icon-btn:hover{transform:translateY(-1px);background:rgba(255,255,255,.14)}
+    .rel{position:relative}
+    .badge{
+      position:absolute;top:-7px;left:-7px;
+      background:linear-gradient(90deg,var(--gold),var(--gold2));
+      color:#111827;
+      min-width:22px;height:22px;padding:0 6px;
+      border-radius:999px;
+      display:flex;align-items:center;justify-content:center;
+      font-size:12px;font-weight:1000;
+      box-shadow:0 10px 25px rgba(0,0,0,.35);
+    }
+
+    .toolbar{
+      padding:10px 0 14px;
+      border-bottom:1px solid var(--line);
+      background:linear-gradient(90deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      backdrop-filter: blur(10px);
+    }
+    .toolbar-inner{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .search{
+      flex:1;min-width:220px;
+      display:flex;align-items:center;gap:10px;
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:18px;padding:12px 12px;
+    }
+    .search input{
+      width:100%;border:none;outline:none;background:transparent;
+      font-size:15px;font-family:inherit;color:#fff
+    }
+    .search input::placeholder{color:rgba(255,255,255,.60)}
+    .sections{display:flex;gap:8px;overflow:auto; padding-bottom:2px;max-width:100%}
+    .pill{
+      display:inline-flex;align-items:center;gap:8px;
+      border:1px solid rgba(255,255,255,.14);
+      padding:10px 14px;border-radius:999px;
+      background:rgba(255,255,255,.06);
+      cursor:pointer;font-weight:1000;
+      color:#fff;
+      transition:.2s;
+      white-space:nowrap;
+    }
+    .pill.active{
+      background:linear-gradient(90deg,var(--pink),var(--pink2));
+      border-color:transparent;
+      box-shadow:0 14px 35px rgba(255,46,136,.25);
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+      gap:16px;
+      padding:16px 0 30px;
+    }
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+      border:1px solid rgba(255,255,255,.12);
+      border-radius:var(--radius);
+      overflow:hidden;
+      box-shadow:var(--shadow);
+      display:flex;flex-direction:column;
+    }
+    .imgwrap{position:relative;background:rgba(255,255,255,.06)}
+    .card img{width:100%;aspect-ratio:1/1;object-fit:cover;display:block;cursor:zoom-in}
+    .chip{
+      position:absolute;bottom:10px;right:10px;
+      background:rgba(0,0,0,.42);
+      border:1px solid rgba(255,255,255,.18);
+      padding:6px 10px;border-radius:999px;
+      font-weight:1000;font-size:12px;
+      backdrop-filter: blur(10px);
+    }
+    .card-body{padding:12px 12px 14px;display:flex;flex-direction:column;gap:10px}
+    .model{font-weight:1000;text-align:center;font-size:16px}
+    .note{text-align:center;color:var(--muted);font-size:12.5px}
+
+    .stepper{
+      display:flex;gap:8px;align-items:center;justify-content:center;
+    }
+    .stepper button{
+      width:42px;height:42px;border-radius:16px;border:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.06);cursor:pointer;font-size:18px;font-weight:1000;color:#fff;
+      transition:.15s transform,.15s background
+    }
+    .stepper button:active{transform:scale(.98)}
+    .stepper input{
+      width:76px;height:42px;border-radius:16px;border:1px solid rgba(255,255,255,.14);
+      text-align:center;font-size:15px;font-weight:1000;font-family:inherit;outline:none;
+      background:rgba(255,255,255,.04); color:#fff;
+    }
+    .add{
+      width:100%;
+      border:none;cursor:pointer;
+      background:linear-gradient(90deg,var(--pink),var(--pink2));
+      color:#fff;border-radius:18px;padding:12px;
+      font-size:15px;font-weight:1000;
+      box-shadow:0 14px 35px rgba(255,46,136,.25);
+    }
+
+    /* Setup card */
+    .setup{
+      margin:16px 0;
+      padding:14px;
+      border-radius:var(--radius);
+      border:1px solid rgba(246,211,101,.25);
+      background:linear-gradient(180deg, rgba(246,211,101,.10), rgba(255,255,255,.03));
+      display:none;
+      box-shadow:0 18px 55px rgba(0,0,0,.35);
+    }
+    .setup h3{margin:0 0 8px;font-size:16px}
+    .setup p{margin:0 0 10px;color:rgba(255,255,255,.8);font-size:13px;line-height:1.6}
+    .setup .row{display:flex;gap:10px;flex-wrap:wrap}
+    .setup input{
+      flex:1;min-width:240px;
+      padding:12px;border-radius:16px;border:1px solid rgba(255,255,255,.18);
+      background:rgba(0,0,0,.25);color:#fff;outline:none;font-family:inherit
+    }
+    .setup button{
+      padding:12px 14px;border-radius:16px;border:none;cursor:pointer;
+      font-weight:1000;background:linear-gradient(90deg,var(--gold),var(--gold2));color:#111827
+    }
+
+    /* Drawer */
+    #overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;z-index:20}
+    #drawer{
+      position:fixed;top:0;left:0;width:100%;max-width:480px;height:100%;
+      background:linear-gradient(180deg, rgba(15,23,42,.96), rgba(2,6,23,.96));
+      border-right:1px solid rgba(255,255,255,.12);
+      z-index:30;transform:translateX(-110%);transition:.25s transform;
+      display:flex;flex-direction:column;
+      backdrop-filter: blur(14px);
+    }
+    #drawer.open{transform:translateX(0)}
+    .drawer-head{
+      padding:14px;border-bottom:1px solid rgba(255,255,255,.12);
+      display:flex;align-items:center;justify-content:space-between;gap:10px
+    }
+    .drawer-title{font-weight:1000;font-size:18px}
+    .drawer-body{padding:14px;overflow:auto;flex:1}
+    .cart-list{display:flex;flex-direction:column;gap:10px}
+    .cart-row{
+      border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:10px;
+      display:flex;gap:10px;align-items:center;background:rgba(255,255,255,.04);
+    }
+    .thumb{
+      width:58px;height:58px;border-radius:16px;object-fit:cover;cursor:zoom-in;
+      background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14)
+    }
+    .row-mid{flex:1;min-width:0}
+    .row-mid .m{font-weight:1000}
+    .row-mid .s{color:rgba(255,255,255,.72);font-size:12px;margin-top:2px}
+    .row-actions{display:flex;gap:6px;align-items:center}
+    .mini{
+      width:36px;height:36px;border-radius:14px;border:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.06);cursor:pointer;font-weight:1000;color:#fff
+    }
+    .qtypill{min-width:42px;text-align:center;font-weight:1000}
+    .total{
+      margin-top:12px;border-top:1px dashed rgba(255,255,255,.16);padding-top:12px;
+      display:flex;justify-content:space-between;align-items:center;font-weight:1000
+    }
+    .ghost{
+      width:100%;border:1px solid rgba(255,255,255,.14);cursor:pointer;
+      background:rgba(255,255,255,.05);color:#fff;border-radius:18px;padding:12px;
+      font-size:14px;font-weight:1000;margin-top:10px
+    }
+    .form{display:grid;gap:10px;margin-top:12px}
+    .field{display:grid;gap:6px}
+    .field label{font-size:12.5px;color:rgba(255,255,255,.78);font-weight:900}
+    .field input, .field textarea{
+      width:100%;padding:12px;border-radius:18px;border:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.05);font-family:inherit;font-size:14px;outline:none;color:#fff
+    }
+    .field textarea{min-height:72px;resize:vertical}
+    .primary{
+      width:100%;border:none;cursor:pointer;
+      background:linear-gradient(90deg,var(--pink),var(--pink2));
+      color:#fff;border-radius:18px;padding:14px;
+      font-size:16px;font-weight:1000;margin-top:10px;
+      box-shadow:0 14px 35px rgba(255,46,136,.25);
+    }
+
+    .footer{padding:14px 0 26px;color:rgba(255,255,255,.70);text-align:center;font-size:12.5px}
+    .social{display:flex;gap:10px;justify-content:center;margin-top:10px;flex-wrap:wrap}
+    .social a{
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(255,255,255,.05);
+      border-radius:999px;padding:10px 14px;font-weight:1000
+    }
+
+    /* Image modal */
+    #imgModal{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;z-index:50;align-items:center;justify-content:center;padding:16px}
+    #imgModal img{max-width:min(980px,100%);max-height:86vh;border-radius:18px;box-shadow:0 20px 60px rgba(0,0,0,.50)}
+    #imgModal .close{
+      position:fixed;top:16px;left:16px;
+      background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.18);
+      color:#fff;border-radius:14px;padding:10px 12px;cursor:pointer;font-weight:1000
+    }
+
+    .center{padding:26px 0;text-align:center;color:rgba(255,255,255,.75)}
+    .toast{position:fixed;bottom:16px;right:16px;z-index:60;background:#111827;color:#fff;padding:12px 14px;border-radius:14px;display:none;max-width:85vw}
+  </style>
+</head>
+
+<body>
+  <script src="./config.js"></script>
+
+  <header>
+    <div class="container">
+      <div class="topbar">
+        <div class="brand">
+          <img id="logo" alt="logo">
+          <div>
+            <div class="title">Good Kids VIP</div>
+            <div class="sub">👑 أفضل اختيارات الأطفال</div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="icon-btn" id="shareBtn" title="مشاركة">🔗</button>
+          <div class="rel">
+            <button class="icon-btn" id="cartBtn" title="السلة">🛒</button>
+            <div class="badge" id="cartBadge" style="display:none">0</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="toolbar">
+    <div class="container">
+      <div class="toolbar-inner">
+        <div class="search">
+          🔍
+          <input id="search" type="text" placeholder="ابحث عن موديل (جزء من الاسم أو الرقم)..." />
+        </div>
+        <div class="sections" id="sections"></div>
+      </div>
+    </div>
+  </div>
+
+  <main class="container">
+    <!-- ✅ حل مشكلة الصورة: بدلاً من رسالة ثابتة، هذه شاشة إعداد تحفظ الرابط -->
+    <div class="setup" id="setupBox">
+      <h3>⚠️ إعداد الرابط لأول مرة</h3>
+      <p>
+        الموقع يحتاج رابط نشر <b>Google Apps Script Web App</b> ليعرض الموديلات ويستقبل الطلبات.
+        الصق الرابط هنا وسيتم حفظه تلقائيًا على جهازك.
+      </p>
+      <div class="row">
+        <input id="apiInput" placeholder="الصق رابط GAS هنا (ينتهي بـ /exec)" />
+        <button id="saveApiBtn">حفظ</button>
+      </div>
+      <p style="margin-top:10px;color:rgba(255,255,255,.72)">
+        تقدر كمان تضيفه في الرابط هكذا: <b>?api=URL</b>
+      </p>
+    </div>
+
+    <div id="status" class="center">جاري تحميل الأصناف…</div>
+    <div class="grid" id="grid"></div>
+
+    <div class="footer">
+      <div>© <span id="year"></span> Good Kids VIP</div>
+      <div class="social" id="social"></div>
+    </div>
+  </main>
+
+  <!-- Cart Drawer -->
+  <div id="overlay"></div>
+  <aside id="drawer" aria-hidden="true">
+    <div class="drawer-head">
+      <div class="drawer-title">سلة المشتريات</div>
+      <button class="icon-btn" id="closeCart" title="إغلاق">✖</button>
+    </div>
+    <div class="drawer-body">
+      <div class="cart-list" id="cartList"></div>
+
+      <div class="total">
+        <span>إجمالي السيريات</span>
+        <span id="totalQty">0</span>
+      </div>
+
+      <button class="ghost" id="clearBtn">تفريغ السلة</button>
+
+      <div class="form">
+        <div class="field">
+          <label>اسم العميل *</label>
+          <input id="name" placeholder="اكتب الاسم" autocomplete="name">
+        </div>
+        <div class="field">
+          <label>رقم الهاتف *</label>
+          <input id="phone" placeholder="مثال: 010xxxxxxx" autocomplete="tel">
+        </div>
+        <div class="field">
+          <label>العنوان</label>
+          <textarea id="address" placeholder="المحافظة / المنطقة / العنوان المختصر"></textarea>
+        </div>
+        <div class="field">
+          <label>شركة الشحن</label>
+          <input id="shipping" placeholder="اختياري">
+        </div>
+
+        <button class="primary" id="checkoutBtn">إتمام الطلبية عبر واتساب</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Image Modal -->
+  <div id="imgModal">
+    <button class="close" id="imgClose">إغلاق</button>
+    <img id="imgFull" alt="preview">
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+<script>
+  // ===== Load config
+  const CFG = window.GKVIP_CONFIG || {};
+  const DRIVE_IMG = CFG.DRIVE_IMG || "https://lh3.googleusercontent.com/d/";
+  const LOGO_ID = CFG.LOGO_ID || "";
+  const SOCIAL = CFG.SOCIAL || {};
+
+  // ===== Resolve API_BASE with priority:
+  // 1) URL param ?api=...
+  // 2) localStorage saved value
+  // 3) config.js value
+  function getUrlParam(name){
+    const u = new URL(location.href);
+    return u.searchParams.get(name);
+  }
+  function normalizeApi(url){
+    if(!url) return "";
+    url = String(url).trim();
+    // allow urlencoded
+    try{ url = decodeURIComponent(url); }catch(_){}
+    // remove trailing spaces
+    url = url.replace(/\s+/g,"");
+    // must contain /exec
+    if(!/\/exec(\?|$)/.test(url)) return url; // still allow; user may paste base
+    return url;
+  }
+
+  let API_BASE =
+    normalizeApi(getUrlParam("api")) ||
+    normalizeApi(localStorage.getItem("gkvip_api")) ||
+    normalizeApi(CFG.API_BASE) || "";
+
+  // ===== DOM
+  const $ = (id) => document.getElementById(id);
+
+  const logo = $("logo");
+  const sections = $("sections");
+  const grid = $("grid");
+  const status = $("status");
+  const search = $("search");
+  const cartBtn = $("cartBtn");
+  const cartBadge = $("cartBadge");
+  const overlay = $("overlay");
+  const drawer = $("drawer");
+  const closeCart = $("closeCart");
+  const cartList = $("cartList");
+  const totalQtyEl = $("totalQty");
+  const checkoutBtn = $("checkoutBtn");
+  const clearBtn = $("clearBtn");
+  const shareBtn = $("shareBtn");
+  const toast = $("toast");
+
+  const imgModal = $("imgModal");
+  const imgFull = $("imgFull");
+  const imgClose = $("imgClose");
+
+  const setupBox = $("setupBox");
+  const apiInput = $("apiInput");
+  const saveApiBtn = $("saveApiBtn");
+
+  $("year").textContent = new Date().getFullYear();
+  if(LOGO_ID) logo.src = DRIVE_IMG + LOGO_ID + "=w300";
+
+  // ===== State
+  let products = [];
+  let currentSection = null;
+  const cart = new Map(); // model -> {qty, id}
+
+  // ===== Utils
+  function showToast(msg){
+    toast.textContent = msg;
+    toast.style.display = "block";
+    setTimeout(()=>toast.style.display="none", 2500);
+  }
+  function imgUrl(fileId, w=1000){
+    return DRIVE_IMG + fileId + `=w${w}`;
+  }
+  function setBadge(){
+    const total = [...cart.values()].reduce((s,it)=>s+it.qty,0);
+    if(total>0){
+      cartBadge.style.display="flex";
+      cartBadge.textContent=String(total);
+    }else{
+      cartBadge.style.display="none";
+    }
+  }
+  function openImage(url){
+    imgFull.src = url;
+    imgModal.style.display="flex";
+  }
+  function closeImage(){
+    imgModal.style.display="none";
+    imgFull.src="";
+  }
+
+  // ===== API
+  async function apiGetProducts(){
+    const url = API_BASE + (API_BASE.includes("?") ? "&" : "?") + "api=products";
+    const res = await fetch(url, { method:"GET" });
+    const data = await res.json();
+    if(!data.ok) throw new Error(data.error || "فشل تحميل الأصناف");
+    return data.products || [];
+  }
+  async function apiSubmitOrder(payload){
+    const res = await fetch(API_BASE, {
+      method:"POST",
+      headers:{ "Content-Type":"application/json" },
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if(!data.ok) throw new Error(data.error || "فشل إرسال الطلب");
+    return data.whatsappUrl;
+  }
+
+  // ===== Render
+  function buildSections(){
+    const secs = [...new Set(products.map(p=>p.section))];
+    sections.innerHTML = "";
+    secs.forEach((s, idx)=>{
+      const b = document.createElement("button");
+      b.className = "pill" + (idx===0 ? " active" : "");
+      b.textContent = "موديلات " + s;
+      b.onclick = ()=>{
+        document.querySelectorAll(".pill").forEach(x=>x.classList.remove("active"));
+        b.classList.add("active");
+        currentSection = s;
+        search.value = "";
+        renderGrid(filterProducts());
+      };
+      sections.appendChild(b);
+    });
+    currentSection = secs[0] || null;
+  }
+
+  function filterProducts(){
+    const q = (search.value || "").trim().toLowerCase();
+    let list = products;
+    if(currentSection) list = list.filter(p=>p.section===currentSection);
+    if(q) list = products.filter(p=>String(p.model).toLowerCase().includes(q)); // search over all
+    return list;
+  }
+
+  function renderGrid(list){
+    grid.innerHTML = "";
+    status.style.display = list.length ? "none" : "block";
+    status.textContent = list.length ? "" : "لا توجد نتائج";
+
+    list.forEach(p=>{
+      const card = document.createElement("div");
+      card.className = "card";
+
+      const wrap = document.createElement("div");
+      wrap.className = "imgwrap";
+
+      const img = document.createElement("img");
+      img.src = imgUrl(p.id, 900);
+      img.loading = "lazy";
+      img.alt = p.model;
+      img.onclick = ()=>openImage(imgUrl(p.id, 1800));
+
+      const chip = document.createElement("div");
+      chip.className = "chip";
+      chip.textContent = p.model;
+
+      wrap.appendChild(img);
+      wrap.appendChild(chip);
+
+      const body = document.createElement("div");
+      body.className = "card-body";
+
+      const model = document.createElement("div");
+      model.className = "model";
+      model.textContent = p.model;
+
+      const note = document.createElement("div");
+      note.className = "note";
+      note.textContent = "السيري قد يكون 9 أو 12";
+
+      const step = document.createElement("div");
+      step.className = "stepper";
+
+      const minus = document.createElement("button");
+      minus.textContent = "−";
+      const plus = document.createElement("button");
+      plus.textContent = "+";
+      const input = document.createElement("input");
+      input.type="number"; input.min="0"; input.value="0";
+      input.inputMode="numeric";
+
+      function setQty(qty){
+        qty = Math.max(0, Number(qty||0));
+        input.value = String(qty);
+        if(qty>0){
+          cart.set(p.model, { qty, id: p.id });
+        }else{
+          cart.delete(p.model);
+        }
+        setBadge();
+        renderCart();
+      }
+
+      minus.onclick = ()=>setQty(Number(input.value||0)-1);
+      plus.onclick  = ()=>setQty(Number(input.value||0)+1);
+      input.oninput = ()=>setQty(input.value);
+
+      step.appendChild(minus);
+      step.appendChild(input);
+      step.appendChild(plus);
+
+      const add = document.createElement("button");
+      add.className = "add";
+      add.textContent = "أضف للسلة";
+      add.onclick = ()=>{
+        const cur = cart.get(p.model)?.qty || 0;
+        setQty(cur>0 ? cur : 1);
+        showToast("تمت الإضافة للسلة ✅");
+      };
+
+      body.appendChild(model);
+      body.appendChild(note);
+      body.appendChild(step);
+      body.appendChild(add);
+
+      card.appendChild(wrap);
+      card.appendChild(body);
+
+      const existing = cart.get(p.model);
+      if(existing) input.value = String(existing.qty);
+
+      grid.appendChild(card);
+    });
+  }
+
+  // ✅ صورة مصغرة داخل السلة + تكبير عند الضغط (موجود هنا)
+  function renderCart(){
+    cartList.innerHTML = "";
+    const entries = [...cart.entries()];
+    if(!entries.length){
+      cartList.innerHTML = `<div class="center">السلة فارغة</div>`;
+      totalQtyEl.textContent = "0";
+      return;
+    }
+
+    let total = 0;
+    entries.forEach(([model, it])=>{
+      total += it.qty;
+
+      const row = document.createElement("div");
+      row.className = "cart-row";
+
+      const thumb = document.createElement("img");
+      thumb.className = "thumb";
+      thumb.src = imgUrl(it.id, 220);
+      thumb.alt = model;
+      thumb.onclick = ()=>openImage(imgUrl(it.id, 1800)); // ✅ تكبير
+
+      const mid = document.createElement("div");
+      mid.className = "row-mid";
+      mid.innerHTML = `<div class="m">${model}</div><div class="s">اضغط على الصورة للتكبير</div>`;
+
+      const actions = document.createElement("div");
+      actions.className = "row-actions";
+
+      const bMinus = document.createElement("button");
+      bMinus.className = "mini";
+      bMinus.textContent = "−";
+
+      const qty = document.createElement("div");
+      qty.className = "qtypill";
+      qty.textContent = String(it.qty);
+
+      const bPlus = document.createElement("button");
+      bPlus.className = "mini";
+      bPlus.textContent = "+";
+
+      const bDel = document.createElement("button");
+      bDel.className = "mini";
+      bDel.textContent = "🗑";
+
+      bMinus.onclick = ()=>{
+        const q = it.qty - 1;
+        if(q<=0) cart.delete(model);
+        else cart.set(model, { ...it, qty:q });
+        setBadge(); renderCart();
+      };
+      bPlus.onclick = ()=>{
+        cart.set(model, { ...it, qty: it.qty + 1 });
+        setBadge(); renderCart();
+      };
+      bDel.onclick = ()=>{
+        cart.delete(model);
+        setBadge(); renderCart();
+      };
+
+      actions.appendChild(bMinus);
+      actions.appendChild(qty);
+      actions.appendChild(bPlus);
+      actions.appendChild(bDel);
+
+      row.appendChild(thumb);
+      row.appendChild(mid);
+      row.appendChild(actions);
+
+      cartList.appendChild(row);
+    });
+
+    totalQtyEl.textContent = String(total);
+  }
+
+  // ===== Drawer
+  function openCart(){
+    overlay.style.display="block";
+    drawer.classList.add("open");
+    renderCart();
+  }
+  function closeCartFn(){
+    overlay.style.display="none";
+    drawer.classList.remove("open");
+  }
+  cartBtn.onclick = openCart;
+  closeCart.onclick = closeCartFn;
+  overlay.onclick = closeCartFn;
+
+  // ===== Share
+  shareBtn.onclick = async ()=>{
+    const url = location.href;
+    if(navigator.share){
+      try{ await navigator.share({ title:"Good Kids VIP", text:"شوف الموديلات 👑", url }); }catch(_){}
+    }else{
+      try{ await navigator.clipboard.writeText(url); showToast("تم نسخ الرابط ✅"); }catch(_){ showToast("انسخ الرابط يدويًا"); }
+    }
+  };
+
+  // ===== Search
+  search.addEventListener("input", ()=>renderGrid(filterProducts()));
+
+  // ===== Clear
+  clearBtn.onclick = ()=>{
+    cart.clear();
+    setBadge(); renderCart();
+    showToast("تم تفريغ السلة");
+  };
+
+  // ===== Checkout
+  checkoutBtn.onclick = async ()=>{
+    const name = $("name").value.trim();
+    const phone = $("phone").value.trim();
+    const address = $("address").value.trim();
+    const shipping = $("shipping").value.trim();
+
+    const items = [...cart.entries()].map(([model,it])=>({ model, qty: it.qty }));
+    if(!items.length) return showToast("السلة فارغة");
+    if(!name) return showToast("اكتب اسم العميل");
+    if(!phone) return showToast("اكتب رقم الهاتف");
+
+    try{
+      checkoutBtn.disabled = true;
+      checkoutBtn.textContent = "جاري الإرسال…";
+      const whatsappUrl = await apiSubmitOrder({ name, phone, address, shipping, items });
+      window.open(whatsappUrl, "_blank");
+
+      cart.clear();
+      setBadge(); renderCart();
+      closeCartFn();
+      showToast("تم إرسال الطلب ✅");
+    }catch(err){
+      alert(err.message || err);
+    }finally{
+      checkoutBtn.disabled = false;
+      checkoutBtn.textContent = "إتمام الطلبية عبر واتساب";
+    }
+  };
+
+  // ===== Social
+  (function renderSocial(){
+    const el = $("social");
+    const items = [];
+    const push = (label, href)=>{
+      if(!href) return;
+      const a = document.createElement("a");
+      a.href = href; a.target="_blank"; a.rel="noopener";
+      a.textContent = label;
+      items.push(a);
+    };
+    push("واتساب", SOCIAL.whatsapp);
+    push("إنستجرام", SOCIAL.instagram);
+    push("فيسبوك", SOCIAL.facebook);
+    push("اتصال", SOCIAL.phone);
+    push("الموقع", SOCIAL.map);
+    if(!items.length){ el.style.display="none"; return; }
+    items.forEach(a=>el.appendChild(a));
+  })();
+
+  // ===== Image modal events
+  imgClose.onclick = closeImage;
+  imgModal.addEventListener("click", (e)=>{ if(e.target === imgModal) closeImage(); });
+
+  // ===== Setup handling (fix for your screenshot)
+  function showSetup(){
+    setupBox.style.display="block";
+    status.textContent = "⚠️ برجاء إدخال رابط Google Apps Script أولاً";
+  }
+  saveApiBtn.onclick = ()=>{
+    const val = normalizeApi(apiInput.value);
+    if(!val) return showToast("الصق الرابط أولاً");
+    API_BASE = val;
+    localStorage.setItem("gkvip_api", API_BASE);
+    setupBox.style.display="none";
+    init(); // reload
+    showToast("تم الحفظ ✅");
+  };
+
+  // ===== Init
+  async function init(){
+    try{
+      if(!API_BASE){
+        showSetup();
+        return;
+      }
+      // hide setup if already has api
+      setupBox.style.display="none";
+
+      status.style.display="block";
+      status.textContent = "جاري تحميل الأصناف…";
+      products = await apiGetProducts();
+
+      if(!products.length){
+        status.textContent = "لا توجد أصناف داخل فولدر الصور.";
+        return;
+      }
+
+      buildSections();
+      status.style.display="none";
+      renderGrid(filterProducts());
+    }catch(err){
+      status.textContent = "حدث خطأ أثناء التحميل: " + (err.message || err);
+      // show setup box to let user fix URL
+      setupBox.style.display="block";
+    }
+  }
+
+  init();
+</script>
+</body>
+</html>
