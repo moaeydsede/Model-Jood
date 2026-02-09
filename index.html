@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Customer Evaluation – CRM Score</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="styles/app.css" />
+</head>
+<body>
+  <div class="login-wrap">
+    <div class="panel login">
+      <div class="brand" style="padding:6px 6px 0 6px">
+        <div class="badge"><img src="assets/favicon.svg" alt=""></div>
+        <div>
+          <div class="title">Customer Evaluation – CRM Score</div>
+          <div class="sub">تقييم العملاء • لوحة CRM خفيفة وسريعة</div>
+        </div>
+      </div>
+
+      <div class="hr"></div>
+
+      <h1>تسجيل الدخول</h1>
+      <p>ادخل بريدك وكلمة المرور المسجلة في Firebase Authentication.</p>
+
+      <div class="toolbar" style="margin-top:10px">
+        <input class="input" id="email" type="email" placeholder="البريد الإلكتروني" autocomplete="username"/>
+        <input class="input" id="password" type="password" placeholder="كلمة المرور" autocomplete="current-password"/>
+        <button class="btn" id="btnLogin">دخول</button>
+        <button class="btn secondary" id="btnDemo" type="button">إعدادات سريعة</button>
+      </div>
+
+      <div class="small" id="status" style="margin-top:8px"></div>
+
+      <div class="hr"></div>
+      <div class="small">
+        ✅ يعمل على GitHub Pages + Firebase (بدون سيرفر).<br>
+        ⚠️ إذا ظهر unauthorized-domain تأكد من إضافة: <b>moaeydsede.github.io</b> داخل Authorized domains.
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" aria-live="polite">
+    <div class="t" id="toastTitle"></div>
+    <div class="m" id="toastMsg"></div>
+  </div>
+
+<script type="module">
+  import { loginWithEmail } from "./js/auth.js";
+  import { FIREBASE_CONFIG } from "./js/config.js";
+
+  const $ = (s)=>document.querySelector(s);
+  function toast(title, msg){
+    $("#toastTitle").textContent = title;
+    $("#toastMsg").textContent = msg || "";
+    $("#toast").classList.add("show");
+    setTimeout(()=>$("#toast").classList.remove("show"), 4200);
+  }
+
+  const status = $("#status");
+  const btn = $("#btnLogin");
+  const demo = $("#btnDemo");
+
+  function setStatus(msg, ok){
+    status.textContent = msg;
+    status.style.color = ok ? "#22c55e" : "rgba(232,238,252,.75)";
+  }
+
+  // Quick setup helper (doesn't expose secrets)
+  demo.addEventListener("click", ()=>{
+    toast("تذكير", "افتح js/config.js وضع إعدادات Firebase الصحيحة (apiKey/authDomain/projectId).");
+  });
+
+  // Basic config check
+  if(String(FIREBASE_CONFIG.apiKey || "").startsWith("PUT_")){
+    setStatus("⚠️ لم يتم إدخال إعدادات Firebase بعد. عدّل js/config.js ثم ارفع الملفات من جديد.", false);
+  } else {
+    setStatus("جاهز للتسجيل.", true);
+  }
+
+  async function doLogin(){
+    const email = $("#email").value.trim();
+    const password = $("#password").value;
+    if(!email || !password){ toast("تنبيه", "ادخل البريد وكلمة المرور"); return; }
+
+    btn.disabled = true;
+    btn.textContent = "جارٍ الدخول…";
+    try{
+      await loginWithEmail(email, password);
+      location.href = "./app.html";
+    }catch(e){
+      // show the most useful error code
+      const code = e && e.code ? e.code : "auth/error";
+      toast("فشل الدخول", code);
+      setStatus("فشل الدخول: " + code, false);
+    }finally{
+      btn.disabled = false;
+      btn.textContent = "دخول";
+    }
+  }
+
+  btn.addEventListener("click", doLogin);
+  $("#password").addEventListener("keydown", (ev)=>{ if(ev.key==="Enter") doLogin(); });
+
+  // PWA offline
+  if("serviceWorker" in navigator){
+    navigator.serviceWorker.register("./service-worker.js").catch(()=>{});
+  }
+</script>
+</body>
+</html>
